@@ -13,7 +13,7 @@ export default function Navbar() {
   };
 
   return (
-    <nav className={"sticky w-full z-50"}>
+    <nav className={"sticky w-full z-50 max-w-[1200px] mx-auto px-2"}>
       <div className="h-15 place-content-center">
         <div className="flex items-center justify-between w-full">
           <Logo />
