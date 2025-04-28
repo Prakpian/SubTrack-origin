@@ -1,5 +1,5 @@
 import React from "react";
-import Button from "../partials/Button";
+import Button from "../components/partials/Button";
 import { Link } from "react-router-dom";
 import { GoArrowRight } from "react-icons/go";
 
