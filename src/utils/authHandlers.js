@@ -36,6 +36,13 @@ const handleAuthSubmit = async (
     await authFunction(auth, sanitizedData.email, sanitizedData.password);
     navigate("/dashboard");
   } catch (err) {
+    if (err.code === "auth/email-already-in-use") {
+      setErrors({ email: "This email is already registered" });
+    }
+    if (err.code === "auth/invalid-credential") {
+      setErrors({ invalid: "Incorrect Email or Password" });
+    }
+
     console.error(err);
   }
 };

@@ -55,6 +55,9 @@ export default function LogIn() {
               <p className="text-red-600 mt-2">{errors.password}</p>
             )}
           </div>
+          {errors.invalid && (
+            <p className="text-red-600 mt-2">{errors.invalid}</p>
+          )}
           <Button btnText={"Submit"} variant={"primary"} />
         </form>
         <Button
