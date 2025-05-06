@@ -1,5 +1,12 @@
 @import "tailwindcss";
+@plugin "daisyui" {
+  themes: false;
+}
 
 :root {
   --primary-color: #14ae5c;
+}
+
+@theme {
+  --box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.15);
 }
