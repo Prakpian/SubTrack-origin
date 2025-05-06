@@ -4,7 +4,7 @@ import Footer from "./Footer";
 
 export default function Layout() {
   return (
-    <div className="grid gap-10">
+    <div>
       <Navbar />
       <main>
         <Outlet />
