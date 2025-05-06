@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Button from "../components/partials/Button";
+import Button from "../components/Button";
 import { Link, useNavigate } from "react-router-dom";
 import { FaGoogle } from "react-icons/fa";
 import {
