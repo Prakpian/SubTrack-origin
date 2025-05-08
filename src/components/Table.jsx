@@ -2,30 +2,29 @@ import React from "react";
 import Button from "./Button";
 import { MdEditDocument } from "react-icons/md";
 import { FaCreditCard, FaPaypal } from "react-icons/fa";
+import EditModal from "./EditModal";
 
 export default function Table() {
   const mockData = [
     {
       name: "Netflix",
       cost: 12.99,
-      cycle: "Monthly",
       category: "Media",
       end: "22/05/2025",
-      payment: "Credit/Debit Card",
+      payment: "card",
     },
     {
       name: "NordVPN",
       cost: 89.88,
-      cycle: "Yearly",
       category: "Software",
       end: "20/8/2027",
-      payment: "PayPal",
+      payment: "payPal",
     },
   ];
 
   const nameToIcon = {
-    "Credit/Debit Card": <FaCreditCard size={20} />,
-    PayPal: <FaPaypal size={20} />,
+    card: <FaCreditCard size={20} />,
+    payPal: <FaPaypal size={20} />,
   };
 
   return (
@@ -35,7 +34,6 @@ export default function Table() {
           <tr>
             <th className="px-4 py-3 text-left max-w-1/3 w-full">Name</th>
             <th className="px-4 py-3 text-left">Category</th>
-            <th className="px-4 py-3 text-left">Cycle</th>
             <th className="px-4 py-3 text-left">End Date</th>
             <th className="px-4 py-3 text-left">Payment</th>
             <th className="px-4 py-3 text-left">Cost</th>
@@ -48,7 +46,6 @@ export default function Table() {
               <tr key={data.name} className="border border-gray-200">
                 <td className="px-4 py-3">{data.name}</td>
                 <td className="px-4 py-3">{data.category}</td>
-                <td className="px-4 py-3">{data.cycle}</td>
                 <td className="px-4 py-3">{data.end}</td>
                 <td className="px-4 py-3">{nameToIcon[data.payment]}</td>
                 <td className="px-4 py-3">{data.cost}</td>
@@ -57,7 +54,11 @@ export default function Table() {
                     variant="ghost"
                     btnText={<MdEditDocument size={20} />}
                     className="hover:bg-gray-200 rounded-full p-2"
+                    handleClick={() =>
+                      document.querySelector(`#model-${data.name}`).showModal()
+                    }
                   />
+                  <EditModal data={data} />
                 </td>
               </tr>
             );
