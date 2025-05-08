@@ -1,6 +1,12 @@
 import React from "react";
 
-export default function Button({ variant, handleClick, btnText, className }) {
+export default function Button({
+  variant,
+  handleClick,
+  btnText,
+  className,
+  type,
+}) {
   const baseClass =
     "py-2 px-3 font-medium rounded-md cursor-pointer active:scale-95";
   const variants = {
@@ -11,6 +17,7 @@ export default function Button({ variant, handleClick, btnText, className }) {
     <button
       className={`${baseClass} ${variants[variant]} ${className}`}
       onClick={handleClick}
+      type={type}
     >
       {btnText}
     </button>
