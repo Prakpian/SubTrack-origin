@@ -18,7 +18,7 @@ export default function SignUp() {
   const navigate = useNavigate();
 
   return (
-    <div className="sm:bg-gray-100 max-w-[400px] mx-auto px-2 pt-2 pb-5 rounded-md">
+    <div className="sm:bg-gray-100 max-w-[400px] mx-auto px-2 pt-2 pb-5 rounded-md mt-10">
       <div className="bg-white p-8 flex flex-col gap-5 rounded-md">
         <form
           onSubmit={(e) => handleSignupSubmit(e, formData, setErrors, navigate)}

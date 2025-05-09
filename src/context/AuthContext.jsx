@@ -1,6 +1,6 @@
-import { onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 import { createContext, useEffect, useState } from "react";
-import { auth } from "../config/firebase";
+import { auth } from "../firebase/firebase.config";
 import LoadingScreen from "../components/LoadingScreen";
 
 export const AuthContext = createContext();
@@ -29,3 +29,11 @@ export default function AuthProvider({ children }) {
     </AuthContext.Provider>
   );
 }
+
+export const logOut = async () => {
+  try {
+    await signOut(auth);
+  } catch (err) {
+    console.error(err);
+  }
+};

@@ -17,7 +17,7 @@ export default function LogIn() {
   const navigate = useNavigate();
 
   return (
-    <div className="sm:bg-gray-100 max-w-[400px] mx-auto px-2 pt-2 pb-5 rounded-md">
+    <div className="sm:bg-gray-100 max-w-[400px] mx-auto px-2 pt-2 pb-5 rounded-md mt-10">
       <div className="bg-white p-8 grid gap-5 rounded-md">
         <form
           onSubmit={(e) => handleLoginSubmit(e, formData, setErrors, navigate)}

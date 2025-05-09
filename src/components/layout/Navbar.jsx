@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import Logo from "../Logo";
 import Button from "../Button";
 import { GoArrowRight } from "react-icons/go";
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext, logOut } from "../../context/AuthContext";
 import Dropdown from "../Dropdown";
 
 export default function Navbar() {
@@ -19,7 +19,7 @@ export default function Navbar() {
     <nav className={"sticky w-full z-50 max-w-[1200px] mx-auto px-2"}>
       <div className="min-h-15 mt-2 sm:mt-0 place-content-center">
         <div className="flex flex-col gap-2 mb-4 sm:m-0 sm:flex-row items-center justify-between w-full">
-          <Link to={!currentUser.email ? "/" : "/dashboard"}>
+          <Link to={currentUser === null ? "/" : "/dashboard"}>
             <Logo />
           </Link>
 
@@ -54,7 +54,12 @@ export default function Navbar() {
             <Dropdown
               text={currentUser.email}
               itemPosiiton="dropdown-bottom dropdown-center sm:dropdown-end"
-              items={["Log Out"]}
+              items={[
+                {
+                  name: "Log Out",
+                  handleItemClick: () => logOut(),
+                },
+              ]}
             />
           )}
         </div>

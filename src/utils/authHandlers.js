@@ -1,4 +1,4 @@
-import { auth, googleProvider } from "../config/firebase";
+import { auth, db, googleProvider } from "../firebase/firebase.config";
 import {
   createUserWithEmailAndPassword,
   signInWithPopup,
@@ -9,6 +9,7 @@ import {
   sanitizeFormData,
   validateLoginForm,
 } from "../utils/validation";
+import { doc, setDoc } from "firebase/firestore";
 
 export const handleChange = (e, setFormData) => {
   const { name, value } = e.target;
@@ -34,6 +35,11 @@ const handleAuthSubmit = async (
 
   try {
     await authFunction(auth, sanitizedData.email, sanitizedData.password);
+    if (authFunction === createUserWithEmailAndPassword) {
+      await setDoc(doc(db, sanitizedData.email, "timestamp"), {
+        createdAt: new Date(),
+      });
+    }
     navigate("/dashboard");
   } catch (err) {
     if (err.code === "auth/email-already-in-use") {
