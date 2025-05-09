@@ -1,19 +1,16 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import Button from "./Button";
-import { deleteDocument, editDocument } from "../firebase/firebase.service";
+import { addToCollection } from "../firebase/firebase.service";
 import { sanitizeText } from "../utils/validation";
-import { AuthContext } from "../context/AuthContext";
 
-export default function EditModal({ data, refetchData }) {
+export default function NewSubModal({ currentUser, refetchData }) {
   const [formData, setFormData] = useState({
-    productName: data.productName,
-    category: data.category,
-    endDate: data.endDate,
-    paymentMethod: data.paymentMethod,
-    cost: data.cost,
+    productName: "",
+    category: "media",
+    endDate: "",
+    paymentMethod: "card",
+    cost: "",
   });
-
-  const { currentUser } = useContext(AuthContext);
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -23,13 +20,20 @@ export default function EditModal({ data, refetchData }) {
     });
 
     try {
-      await editDocument(currentUser, formData, data.id);
+      await addToCollection(currentUser, formData);
       if (
         formData.productName !== "" ||
         formData.endDate !== "" ||
         formData.cost !== ""
       ) {
-        document.querySelector(`#modal-${data.id}`).close();
+        setFormData({
+          productName: "",
+          category: "media",
+          endDate: "",
+          paymentMethod: "card",
+          cost: "",
+        });
+        document.querySelector("#modal-add").close();
         refetchData();
       }
     } catch (err) {
@@ -37,30 +41,10 @@ export default function EditModal({ data, refetchData }) {
     }
   };
 
-  const deleteDoc = async () => {
-    try {
-      await deleteDocument(currentUser, data.id);
-      refetchData();
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const closeModal = () => {
-    document.querySelector(`#modal-${data.id}`).close();
-    setFormData({
-      productName: data.productName,
-      category: data.category,
-      endDate: data.endDate,
-      paymentMethod: data.paymentMethod,
-      cost: data.cost,
-    });
-  };
-
   return (
-    <dialog id={`modal-${data.id}`} className="modal">
+    <dialog id="modal-add" className="modal">
       <div className="modal-box bg-white">
-        <h3 className="font-bold text-lg">Edit</h3>
+        <h3 className="font-bold text-lg">Add Subscription</h3>
         <form className="py-4 grid gap-3" onSubmit={onSubmit}>
           <div className="grid">
             <label htmlFor="name">Name</label>
@@ -72,6 +56,7 @@ export default function EditModal({ data, refetchData }) {
               onChange={(e) =>
                 setFormData({ ...formData, productName: e.target.value })
               }
+              required
             />
           </div>
           <div className="grid">
@@ -101,6 +86,7 @@ export default function EditModal({ data, refetchData }) {
               onChange={(e) =>
                 setFormData({ ...formData, endDate: e.target.value })
               }
+              required
             />
           </div>
           <div className="grid">
@@ -129,25 +115,30 @@ export default function EditModal({ data, refetchData }) {
               value={formData.cost}
               className="border border-gray-400 rounded-md p-1"
               onChange={(e) =>
-                setFormData({ ...formData, cost: e.target.value })
+                setFormData({
+                  ...formData,
+                  cost: e.target.value,
+                })
               }
+              required
             />
           </div>
-          <div className="modal-action flex place-content-between">
+          <div className="modal-action">
+            <Button type="submit" btnText={"Add"} variant={"primary"} />
             <Button
-              type={"button"}
-              btnText={"Delete"}
-              variant={"danger"}
-              handleClick={deleteDoc}
+              type="button"
+              btnText={"Cancel"}
+              handleClick={() => {
+                document.querySelector("#modal-add").close();
+                setFormData({
+                  productName: "",
+                  category: "media",
+                  endDate: "",
+                  paymentMethod: "card",
+                  cost: "",
+                });
+              }}
             />
-            <div>
-              <Button type="submit" btnText={"Save"} variant={"primary"} />
-              <Button
-                type="button"
-                btnText={"Cancel"}
-                handleClick={closeModal}
-              />
-            </div>
           </div>
         </form>
       </div>
