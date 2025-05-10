@@ -11,14 +11,17 @@ import { AuthContext } from "../context/AuthContext";
 export default function Dashboard() {
   const { currentUser } = useContext(AuthContext);
   const [dataCollection, setDataCollection] = useState([]);
-  const [displayColleciton, setDisplayCollection] = useState([]);
+  const [displayCollection, setDisplayCollection] = useState([]);
   const [monthlyCost, setMonthlyCost] = useState(0);
 
   const fetchData = async () => {
     try {
       const data = await getCollection(currentUser);
-      setDataCollection(data);
-      setDisplayCollection(data);
+      const sortData = [...data]
+        .filter((item) => item.productName)
+        .sort((a, b) => a.productName.localeCompare(b.productName));
+      setDataCollection(sortData);
+      setDisplayCollection(sortData);
     } catch (err) {
       console.error(err);
     }
@@ -38,13 +41,39 @@ export default function Dashboard() {
     );
   };
 
+  const sortTable = (value) => {
+    if (value === "none") {
+      const sortAlpha = [...displayCollection]
+        .filter((item) => item.productName)
+        .sort((a, b) => a.productName.localeCompare(b.productName));
+      setDisplayCollection(sortAlpha);
+      return;
+    }
+
+    const sortByCost = [...displayCollection].sort(
+      (a, b) =>
+        (value === "lowToHigh" && a.cost - b.cost) ||
+        (value === "highToLow" && b.cost - a.cost) ||
+        (value === "endSoon" && new Date(a.endDate) - new Date(b.endDate))
+    );
+    setDisplayCollection(sortByCost);
+  };
+
+  const searchProductName = (value) => {
+    if (value === "") return setDisplayCollection(dataCollection);
+    const searchFilter = [...displayCollection].filter((item) =>
+      item.productName.toLowerCase().includes(value)
+    );
+    setDisplayCollection(searchFilter);
+  };
+
   return (
     <div className="bg-gray-100 p-2">
       <div className="max-w-[1200px] w-full mx-auto my-10">
         <section className="grid sm:grid-cols-3 gap-5 mb-10">
           <div className="bg-white rounded-md p-5 grow shadow-(--box-shadow)">
             <h3 className="font-medium">Total Subscription</h3>
-            <p className="text-2xl">{dataCollection.length - 1}</p>
+            <p className="text-2xl">{dataCollection.length}</p>
           </div>
           <div className="bg-white rounded-md p-5 grow shadow-(--box-shadow)">
             <h3 className="font-medium">Monthly Cost (£)</h3>
@@ -67,6 +96,7 @@ export default function Dashboard() {
                   id="search"
                   className="border border-gray-400 rounded-md p-1"
                   placeholder="Search product"
+                  onChange={(e) => searchProductName(e.target.value)}
                 />
               </div>
               <div className="flex gap-2">
@@ -85,11 +115,12 @@ export default function Dashboard() {
                 <Dropdown
                   text={<BsSortDown size={18} />}
                   items={[
-                    { name: "All" },
-                    { name: "Low to High Cost" },
-                    { name: "High to Low Cost" },
-                    { name: "Ending Soon" },
+                    { name: "None", value: "none" },
+                    { name: "Low to High Cost", value: "lowToHigh" },
+                    { name: "High to Low Cost", value: "highToLow" },
+                    { name: "Ending Soon", value: "endSoon" },
                   ]}
+                  onClick={(e) => sortTable(e.target.id)}
                 />
               </div>
             </div>
@@ -103,7 +134,7 @@ export default function Dashboard() {
             <NewSubModal currentUser={currentUser} refetchData={fetchData} />
           </div>
           <hr className="my-10 text-gray-300" />
-          <Table data={displayColleciton} refetchData={fetchData} />
+          <Table data={displayCollection} refetchData={fetchData} />
         </section>
       </div>
     </div>

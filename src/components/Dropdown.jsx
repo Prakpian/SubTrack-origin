@@ -3,9 +3,9 @@ import React from "react";
 export default function Dropdown({
   text,
   items,
-  handleItemClick,
   itemPosiiton = "dropdown-bottom",
   className,
+  onClick,
 }) {
   return (
     <div className={`dropdown ${itemPosiiton}`}>
@@ -22,8 +22,10 @@ export default function Dropdown({
       >
         {items?.map((item) => {
           return (
-            <li key={item}>
-              <a onClick={handleItemClick}>{item}</a>
+            <li key={item.name}>
+              <a id={item.value} onClick={onClick}>
+                {item.name}
+              </a>
             </li>
           );
         })}
