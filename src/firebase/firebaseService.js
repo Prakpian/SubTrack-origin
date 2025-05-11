@@ -6,7 +6,7 @@ import {
   doc,
   deleteDoc,
 } from "firebase/firestore";
-import { db } from "./firebase.config";
+import { db } from "./firebaseConfig";
 
 export const getCollection = async (currentUser) => {
   try {
