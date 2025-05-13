@@ -1,7 +1,8 @@
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { createContext, useEffect, useState } from "react";
-import { auth } from "../firebase/firebase.config";
+import { auth } from "../firebase/firebaseConfig";
 import LoadingScreen from "../components/LoadingScreen";
+import { checkUnverifiedUser } from "../utils/authHandlers";
 
 export const AuthContext = createContext();
 
@@ -13,7 +14,7 @@ export default function AuthProvider({ children }) {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
       setLoading(false);
-      console.log(user);
+      if (user) checkUnverifiedUser();
     });
 
     return unsubscribe;

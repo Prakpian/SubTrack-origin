@@ -68,8 +68,7 @@ export default function Dashboard() {
       <div className="max-w-[1200px] w-full mx-auto my-10">
         {!currentUser.emailVerified && (
           <p className="p-5 rounded-md bg-yellow-100 text-yellow-700 mb-10 italic shadow-(--box-shadow)">
-            Please verify you email to keep your account after 24 hours (email
-            may take some time).
+            Please verify you email to keep your account after 24 hours.
           </p>
         )}
         <DashboardStats dataCollection={dataCollection} />

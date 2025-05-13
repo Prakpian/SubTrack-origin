@@ -1,15 +1,16 @@
-import { auth, db, googleProvider } from "../firebase/firebase.config";
+import { auth, db, googleProvider } from "../firebase/firebaseConfig";
 import {
   createUserWithEmailAndPassword,
   signInWithPopup,
   signInWithEmailAndPassword,
+  sendEmailVerification,
 } from "firebase/auth";
 import {
   validateSignupForm,
   sanitizeFormData,
   validateLoginForm,
 } from "../utils/validation";
-import { doc, setDoc } from "firebase/firestore";
+import { collection, doc, serverTimestamp, setDoc } from "firebase/firestore";
 
 export const handleChange = (e, setFormData) => {
   const { name, value } = e.target;
@@ -36,9 +37,14 @@ const handleAuthSubmit = async (
   try {
     await authFunction(auth, sanitizedData.email, sanitizedData.password);
     if (authFunction === createUserWithEmailAndPassword) {
-      await setDoc(doc(db, sanitizedData.email, "timestamp"), {
-        createdAt: new Date(),
+      const docRef = doc(db, "users", auth.currentUser.uid);
+      const subcollectionRef = collection(docRef, "subscriptions");
+
+      await setDoc(docRef, { email: auth.currentUser.email });
+      await setDoc(doc(subcollectionRef), {
+        createdAt: serverTimestamp(),
       });
+      await sendEmailVerification(auth.currentUser);
     }
     navigate("/dashboard");
   } catch (err) {
@@ -80,5 +86,22 @@ export const signInWithGoogle = async () => {
     await signInWithPopup(auth, googleProvider);
   } catch (err) {
     console.error(err);
+  }
+};
+
+export const checkUnverifiedUser = async () => {
+  const user = auth.currentUser;
+
+  if (user && !user.emailVerified) {
+    const creationTime = new Date(user.metadata.creationTime).getTime();
+    const twentyFourHoursAgo = Date.now() - 24 * 60 * 60 * 1000;
+
+    if (creationTime < twentyFourHoursAgo) {
+      try {
+        await deleteUser(user);
+      } catch (error) {
+        console.error("Error deleting user:", error);
+      }
+    }
   }
 };

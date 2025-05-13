@@ -5,7 +5,7 @@ import { GoArrowRight } from "react-icons/go";
 
 export default function Home() {
   return (
-    <div className="place-content-center place-items-center flex flex-col">
+    <div className="place-content-center place-items-center flex flex-col my-10">
       <section className="flex gap-15 px-2 place-items-center">
         <div className="max-w-[400px] grid gap-5">
           <h1 className="text-5xl font-medium">

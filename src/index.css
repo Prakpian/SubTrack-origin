@@ -6,6 +6,7 @@
 
 :root {
   --primary-color: #14ae5c;
+  --danger: #ff0021;
 }
 
 @theme {

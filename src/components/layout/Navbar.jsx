@@ -16,9 +16,9 @@ export default function Navbar() {
   };
 
   return (
-    <nav className={"sticky w-full z-50 max-w-[1200px] mx-auto px-2"}>
-      <div className="min-h-15 mt-2 sm:mt-0 place-content-center">
-        <div className="flex flex-col gap-2 mb-4 sm:m-0 sm:flex-row items-center justify-between w-full">
+    <nav className="sticky w-full z-50 max-w-[1200px] mx-auto">
+      <div className="min-h-15 mt-2 sm:mt-0 place-content-center px-2">
+        <div className="flex mb-4 sm:m-0 sm:flex-row items-center justify-between w-full">
           <Link to={currentUser === null ? "/" : "/dashboard"}>
             <Logo />
           </Link>
@@ -41,35 +41,54 @@ export default function Navbar() {
             </div>
           )}
 
-          {!currentUser && (
-            <div className="md:hidden">
-              {!openMenu ? (
-                <MdMenu size={24} onClick={closeMenu} />
-              ) : (
-                <MdClose size={24} onClick={closeMenu} />
-              )}
-            </div>
-          )}
+          <div className="sm:hidden">
+            {!openMenu ? (
+              <MdMenu size={24} onClick={closeMenu} />
+            ) : (
+              <MdClose size={24} onClick={closeMenu} />
+            )}
+          </div>
+
           {currentUser && (
-            <Dropdown
-              text={currentUser.email}
-              itemPosiiton="dropdown-bottom dropdown-center sm:dropdown-end"
-              items={[
-                {
-                  name: "Log Out",
-                  handleItemClick: () => logOut(),
-                },
-              ]}
-            />
+            <div className="hidden sm:block">
+              <Dropdown
+                text={currentUser.email}
+                itemPosiiton="dropdown-bottom dropdown-center sm:dropdown-end"
+                items={[
+                  {
+                    name: "Log Out",
+                  },
+                ]}
+                onClick={() => logOut()}
+              />
+            </div>
           )}
         </div>
       </div>
 
       {openMenu && (
-        <div className="md:hidden bg-gray-100">
-          <div className="grid place-items-center py-5 gap-2 font-medium">
-            <Link to={"/login"}>LOG IN</Link>
-            <Link to={"/signup"}>SIGN UP</Link>
+        <div className="md:hidden bg-(--primary-color)">
+          <div className="grid place-items-center py-5 gap-2 font-medium text-white">
+            {!currentUser && (
+              <Link to={"/login"} onClick={() => setOpenMenu(!openMenu)}>
+                LOG IN
+              </Link>
+            )}
+            {!currentUser && (
+              <Link to={"/signup"} onClick={() => setOpenMenu(!openMenu)}>
+                SIGN UP
+              </Link>
+            )}
+            {currentUser && (
+              <p
+                onClick={() => {
+                  logOut();
+                  setOpenMenu(!openMenu);
+                }}
+              >
+                LOG OUT
+              </p>
+            )}
           </div>
         </div>
       )}

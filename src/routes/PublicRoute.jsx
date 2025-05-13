@@ -7,7 +7,7 @@ export default function PublicRoute() {
   const { currentUser, loading } = useContext(AuthContext);
 
   useEffect(() => {
-    if (!loading && currentUser) {
+    if (!loading && currentUser !== null) {
       navigate("/dashboard", { replace: true });
     }
   }, [currentUser, loading, navigate]);

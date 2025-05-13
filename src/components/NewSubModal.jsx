@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Button from "./Button";
-import { addToCollection } from "../firebase/firebase.service";
+import { addToCollection } from "../firebase/firebaseService";
 import { sanitizeText } from "../utils/validation";
 
 export default function NewSubModal({ currentUser, refetchData }) {

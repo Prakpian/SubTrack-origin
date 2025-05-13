@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import Button from "./Button";
-import { deleteDocument, editDocument } from "../firebase/firebase.service";
+import { deleteDocument, editDocument } from "../firebase/firebaseService";
 import { sanitizeText } from "../utils/validation";
 import { AuthContext } from "../context/AuthContext";
 
