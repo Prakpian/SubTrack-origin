@@ -12,7 +12,7 @@ export default function Button({
   const variants = {
     primary: "bg-(--primary-color) text-white hover:bg-[#12964f]",
     danger: "bg-(--danger) text-white hover:bg-[#d90303]",
-    outline: "bg-white border",
+    outline: "bg-white border hover:bg-[#f0f0f0]",
   };
   return (
     <button
