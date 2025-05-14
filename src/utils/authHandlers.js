@@ -4,6 +4,7 @@ import {
   signInWithPopup,
   signInWithEmailAndPassword,
   sendEmailVerification,
+  deleteUser,
 } from "firebase/auth";
 import {
   validateSignupForm,
