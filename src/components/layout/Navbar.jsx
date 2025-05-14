@@ -41,7 +41,7 @@ export default function Navbar() {
             </div>
           )}
 
-          <div className="sm:hidden">
+          <div className="md:hidden">
             {!openMenu ? (
               <MdMenu size={24} onClick={closeMenu} />
             ) : (
